@@ -1,0 +1,79 @@
+{
+  "name": "telegram-vault",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development node -r esbuild-register ./scripts/dev.ts",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "publish:win": "vite build && node -r esbuild-register ./scripts/prod.ts && electron-builder --win",
+    "publish:mac": "vite build && node -r esbuild-register ./scripts/prod.ts && electron-builder --macos"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@eove/eslint-config-electron": "^1.8.0",
+    "@types/react": "^18.0.18",
+    "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "@vitejs/plugin-react": "^1.0.7",
+    "chalk": "^5.0.1",
+    "cross-env": "^7.0.3",
+    "electron": "^20.1.1",
+    "electron-builder": "^23.5.0",
+    "esbuild": "^0.14.28",
+    "esbuild-register": "^3.3.2",
+    "eslint": "8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-no-relative-import-paths": "^1.4.0",
+    "eslint-plugin-react": "^7.31.4",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "prettier": "^2.6.1",
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0"
+  },
+  "build": {
+    "directories": {
+      "output": "dist",
+      "buildResources": "public"
+    },
+    "appId": "vite.react.electron.tailwind.app",
+    "productName": "vite-react-electron-tailwind-starter",
+    "win": {
+      "publisherName": "vite-react-electron-tailwind-starter",
+      "sign": null
+    },
+    "asar": true,
+    "extraMetadata": {
+      "main": "main/index.js"
+    },
+    "files": [
+      {
+        "filter": [
+          "package.json"
+        ]
+      },
+      {
+        "from": "./dist",
+        "to": "./",
+        "filter": [
+          "index.html"
+        ]
+      },
+      {
+        "from": "./dist/main",
+        "to": "./main"
+      },
+      {
+        "from": "./dist/assets",
+        "to": "./assets"
+      }
+    ]
+  }
+}
