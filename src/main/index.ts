@@ -1,4 +1,5 @@
 import { app, BrowserWindow, BrowserWindowConstructorOptions } from "electron";
+import * as path from "path";
 
 const isDevelopment = !app.isPackaged;
 
@@ -16,6 +17,7 @@ const createWindow = async () => {
       devTools: isDevelopment,
       spellcheck: false,
       nodeIntegration: true,
+      preload: path.resolve(__dirname, "main", "preload.js"),
     },
   };
   const browserWindow = new BrowserWindow(windowOptions);
@@ -23,9 +25,8 @@ const createWindow = async () => {
   if (isDevelopment) {
     await browserWindow.loadURL(`http://localhost:3000`);
   } else {
-    await browserWindow.loadFile("./index.html");
+    await browserWindow.loadFile("./renderer/index.html");
   }
-
   browserWindow.webContents.openDevTools();
 };
 
