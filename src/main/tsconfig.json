@@ -1,5 +1,4 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "ES2018",
     "module": "CommonJS",
@@ -8,8 +7,8 @@
     "baseUrl": "../../src",
     "paths": {
       "@/main/*": ["main/*"]
-    }
+    },
   },
-  "include": ["../main/**/*"],
+  "include": ["../main/**/*.ts"],
   "exclude": ["../renderer/**/*"]
 }

@@ -14,7 +14,8 @@
     "paths": {
       "@/renderer/*": ["renderer/*"]
     },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true
   },
   "include": ["../renderer/**/*"],
   "exclude": ["../main/**/*"]
