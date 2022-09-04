@@ -5,7 +5,7 @@ import * as esbuild from "esbuild";
 import * as fs from "fs";
 import * as path from "path";
 
-import { CompileError, entryPath, mainPath, outDirMain } from "./common";
+import { CompileError, entryPaths, mainPath, outDirMain } from "./common";
 
 function transformErrors(error: esbuild.BuildFailure): CompileError[] {
   const errors = error.errors.map((e): CompileError => {
@@ -31,13 +31,15 @@ export default async (
   try {
     await esbuild.build({
       outdir: outDirMain,
-      entryPoints: [entryPath],
+      entryPoints: entryPaths,
       tsconfig: tsconfigPath,
       format: "cjs",
+      bundle: true,
       logLevel: "info",
       incremental: true,
       platform: "node",
       sourcemap: false,
+      external: ["electron"],
       watch: false,
     });
     buildComplete(outDirMain);
