@@ -1,6 +1,11 @@
 import { app, BrowserWindow, BrowserWindowConstructorOptions } from "electron";
 import * as path from "path";
 
+import { registerIpcChannels } from "@/main/ipc-channel-router";
+
+import { fetchDatabase } from "./core/db-client";
+import { connectTelegramClient } from "./core/gramjs-client";
+import { authService } from "./services";
 const isDevelopment = !app.isPackaged;
 
 const createWindow = async () => {
@@ -17,7 +22,7 @@ const createWindow = async () => {
       devTools: isDevelopment,
       spellcheck: false,
       nodeIntegration: true,
-      preload: path.resolve(__dirname, "main", "preload.js"),
+      preload: path.resolve(__dirname, "preload.js"),
     },
   };
   const browserWindow = new BrowserWindow(windowOptions);
@@ -31,6 +36,18 @@ const createWindow = async () => {
 };
 
 app.whenReady().then(async () => {
+  if (app.isPackaged) {
+    await connectTelegramClient("production");
+  } else {
+    await connectTelegramClient("development");
+  }
+
+  if (await authService.checkAuthorization()) {
+    await fetchDatabase();
+  }
+
+  registerIpcChannels();
+
   await createWindow();
   app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {

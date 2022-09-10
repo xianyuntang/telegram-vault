@@ -6,9 +6,11 @@
     "outDir": "../../dist",
     "baseUrl": "../../src",
     "paths": {
-      "@/main/*": ["main/*"]
+      "@/main/*": ["main/*"],
+      "@/common/*": ["common/*"]
     },
+    "esModuleInterop": true
   },
-  "include": ["../main/**/*.ts"],
+  "include": ["../main/**/*.ts", "../common/**/*.ts"],
   "exclude": ["../renderer/**/*"]
 }

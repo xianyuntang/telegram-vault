@@ -4,7 +4,6 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "./",
   root: resolve("./src/renderer"),
   build: {
     outDir: resolve("./dist"),
@@ -14,6 +13,7 @@ export default defineConfig({
     alias: {
       "@/renderer": resolve(__dirname, "src", "renderer"),
       "@/main": resolve(__dirname, "src", "main"),
+      "@/common": resolve(__dirname, "src", "common"),
     },
   },
 });

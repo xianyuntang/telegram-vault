@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../../dev.db"
+}
+
+model Folder {
+  id Int @id @default(autoincrement())
+  name String 
+  parentId Int?
+  parent Folder? @relation("Folder", fields: [parentId] , references: [id])
+  children Folder[] @relation("Folder")
+}
+
+model File {
+  id Int @id @default(autoincrement())
+  folderId  String
+  filename String
+  fileSize Float
+  filepath String
+  fileExt String
+  accessHash String
+  fileReference Bytes
+  messageId Int
+}
