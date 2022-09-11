@@ -23,6 +23,7 @@ const File: React.FC<FileProps> = ({ file, onClick }) => {
   return (
     <Paper
       sx={{
+        position: "relative",
         width: "150px",
         height: "100px",
         padding: "8px",
@@ -45,8 +46,8 @@ const File: React.FC<FileProps> = ({ file, onClick }) => {
             sx={{
               width: "100%",
               display: "-webkit-box",
-              "-webkit-line-clamp": "2",
-              "-webkit-box-orient": "vertical",
+              WebkitLineClamp: "2",
+              WebkitBoxOrient: "vertical",
               textOverflow: "ellipsis",
               overflow: "hidden",
             }}
@@ -56,7 +57,9 @@ const File: React.FC<FileProps> = ({ file, onClick }) => {
           </Typography>
         </Tooltip>
       </Box>
-      <Box>
+      <Box
+        sx={{ position: "absolute", width: "calc(100% - 16px)", top: "90px" }}
+      >
         {file.uploading && file.progress !== undefined && (
           <LinearProgress variant="determinate" value={file.progress * 100} />
         )}

@@ -17,7 +17,6 @@ const Layout: React.FC = () => {
       setLoading(true);
       try {
         const isAuth = await telegramService.checkAuth();
-        console.log(isAuth);
         if (isAuth) {
           navigate(AppRouterPath.FILE_EXPLORER);
         } else {

@@ -100,15 +100,16 @@ export const deleteMessage = async (
   request: IpcRequest<DeleteMessageRequestData>
 ) => {
   const messageIds = request.data.files.map((file) => file.messageId);
-  const ids = request.data.files.map((file) => file.id);
+  const ids = new Set(request.data.files.map((file) => file.id));
   await messageService.deleteMessages(messageIds);
 
   const key = `${StoreKey.FILE}.${request.data.folderId}`;
   const files = store.get(key) as FileEntity[];
 
   const newFiles = files.filter((file) => {
-    return !ids.includes(file.id);
+    return !ids.has(file.id);
   });
+
   store.set(key, newFiles);
 
   event.sender.send(request.responseChannel, true);

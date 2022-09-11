@@ -29,10 +29,10 @@ const createWindow = async () => {
 
   if (isDevelopment) {
     await browserWindow.loadURL(`http://localhost:3000`);
+    browserWindow.webContents.openDevTools();
   } else {
     await browserWindow.loadFile("./renderer/index.html");
   }
-  browserWindow.webContents.openDevTools();
 };
 
 app.whenReady().then(async () => {

@@ -2,16 +2,12 @@
   "name": "telegram-vault",
   "private": true,
   "version": "0.0.0",
-  "prisma": {
-    "schema": "src/main/prisma/schema.prisma"
-  },
   "scripts": {
     "dev": "cross-env NODE_ENV=development node -r esbuild-register ./scripts/dev.ts",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "publish:win": "vite build && node -r esbuild-register ./scripts/prod.ts && electron-builder --win",
-    "publish:mac": "vite build && node -r esbuild-register ./scripts/prod.ts && electron-builder --macos",
-    "db:migrate": "npx prisma migrate dev &&  npx prisma generate "
+    "publish:mac": "vite build && node -r esbuild-register ./scripts/prod.ts && electron-builder --macos"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -81,11 +77,8 @@
         ]
       },
       {
-        "from": "./dist",
-        "to": "./",
-        "filter": [
-          "index.html"
-        ]
+        "from": "./dist/renderer",
+        "to": "./renderer"
       },
       {
         "from": "./dist/main",

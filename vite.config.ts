@@ -4,9 +4,10 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  base: "./",
   root: resolve("./src/renderer"),
   build: {
-    outDir: resolve("./dist"),
+    outDir: resolve("./dist/renderer"),
     emptyOutDir: true,
   },
   resolve: {
