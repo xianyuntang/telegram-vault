@@ -9,6 +9,7 @@ import {
 } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
+import { AppRouterPath } from "@/renderer/components/AppRouter";
 import { dbService, telegramService } from "@/renderer/ipc-services";
 interface SignInWithPasswordForm {
   password: string;
@@ -27,8 +28,9 @@ const SignInWithPasswordStep: React.FC = () => {
     setLoading(true);
     try {
       const response = await telegramService.signInWithPassword(data);
+      console.log(response);
       await dbService.fetchDatabase();
-      navigate("/");
+      navigate(AppRouterPath.FILE_EXPLORER);
     } catch (e) {
       console.log(e);
     }

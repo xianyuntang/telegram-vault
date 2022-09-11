@@ -4,6 +4,7 @@ import { TelegramChannel } from "@/common/ipc-channel";
 import {
   DeleteMessageRequestData,
   DownloadFilesRequestData,
+  GetCountriesListResponseData,
   SendCodeRequestData,
   SendCodeResponseData,
   SendMediaToMeRequestData,
@@ -19,11 +20,16 @@ export const downloadFiles = async (data: DownloadFilesRequestData) => {
   });
 };
 
-export const checkAuth = (): Promise<boolean> => {
+export const checkAuth = async (): Promise<boolean> => {
   return ipc.send(TelegramChannel.CHECK_AUTH);
 };
 
-export const sendCode = (
+export const getCountriesList =
+  async (): Promise<GetCountriesListResponseData> => {
+    return ipc.send(TelegramChannel.GET_COUNTRIES_LIST);
+  };
+
+export const sendCode = async (
   data: SendCodeRequestData
 ): Promise<SendCodeResponseData> => {
   return ipc.send(TelegramChannel.SEND_CODE, {
@@ -31,7 +37,7 @@ export const sendCode = (
   });
 };
 
-export const signIn = (
+export const signIn = async (
   data: SignInRequestData
 ): Promise<SignInResponseData> => {
   return ipc.send(TelegramChannel.SIGN_IN, {
@@ -39,7 +45,7 @@ export const signIn = (
   });
 };
 
-export const signInWithPassword = (
+export const signInWithPassword = async (
   data: SignInWithPasswordRequestData
 ): Promise<any> => {
   return ipc.send(TelegramChannel.SIGN_IN_WITH_PASSWORD, {

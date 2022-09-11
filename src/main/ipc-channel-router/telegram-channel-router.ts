@@ -20,6 +20,10 @@ const telegramChannelRouters: IpcChannelRouter[] = [
     handler: telegramController.SignInWithPassword,
   },
   {
+    name: TelegramChannel.GET_COUNTRIES_LIST,
+    handler: telegramController.getCountriesList,
+  },
+  {
     name: TelegramChannel.SEND_MEDIA_TO_ME,
     handler: telegramController.sendMessageToMe,
   },

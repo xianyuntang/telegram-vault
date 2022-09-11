@@ -7,6 +7,15 @@ export const checkAuthorization = async () => {
   return await telegramClient.checkAuthorization();
 };
 
+export const getCountriesList = async () => {
+  return await telegramClient.invoke(
+    new Api.help.GetCountriesList({
+      langCode: "en",
+      hash: 0,
+    })
+  );
+};
+
 export const sendCode = async (phoneNumber: string) => {
   return await telegramClient.invoke(
     new Api.auth.SendCode({

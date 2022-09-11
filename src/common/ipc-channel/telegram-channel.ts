@@ -6,4 +6,5 @@ export enum TelegramChannel {
   DOWNLOAD_FILES = "/tg/download-files",
   SEND_MEDIA_TO_ME = "/tg/send-message-to-me",
   DELETE_MESSAGE = "/tg/delete-message",
+  GET_COUNTRIES_LIST = "/tg/get-countries-list",
 }

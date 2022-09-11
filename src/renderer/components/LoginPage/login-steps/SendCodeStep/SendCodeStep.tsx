@@ -1,6 +1,13 @@
 import { LoadingButton } from "@mui/lab";
-import { Grid, TextField } from "@mui/material";
-import React, { useState } from "react";
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import {
   Controller,
   SubmitErrorHandler,
@@ -8,10 +15,12 @@ import {
   useForm,
 } from "react-hook-form";
 
+import { Country } from "@/common/gramjs";
 import { telegramService } from "@/renderer/ipc-services";
 
 interface SendCodeForm {
   phoneNumber: string;
+  country: string;
 }
 
 interface SendCodeStepProps {
@@ -20,24 +29,37 @@ interface SendCodeStepProps {
   nextStep: () => void;
 }
 
-const SendCodeStep: React.FC<SendCodeStepProps> = (props) => {
-  const { setPhoneNumber, setPhoneCodeHash, nextStep } = props;
+const SendCodeStep: React.FC<SendCodeStepProps> = ({
+  setPhoneNumber,
+  setPhoneCodeHash,
+  nextStep,
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [countries, setCountries] = useState<Country[]>([]);
 
   const { handleSubmit, control, getValues } = useForm<SendCodeForm>({
     defaultValues: {
       phoneNumber: "",
+      country: "",
     },
   });
+
+  useEffect(() => {
+    (async () => {
+      const response = await telegramService.getCountriesList();
+      setCountries(response.countries);
+    })();
+  }, []);
 
   const onSubmit: SubmitHandler<SendCodeForm> = async (data) => {
     setLoading(true);
     try {
+      const fullPhoneNumber = `+${data.country}${data.phoneNumber}`;
       const response = await telegramService.sendCode({
-        phoneNumber: getValues("phoneNumber"),
+        phoneNumber: fullPhoneNumber,
       });
       console.log(response);
-      setPhoneNumber(getValues("phoneNumber"));
+      setPhoneNumber(fullPhoneNumber);
       setPhoneCodeHash(response.phoneCodeHash);
       nextStep();
     } catch (e) {
@@ -61,16 +83,46 @@ const SendCodeStep: React.FC<SendCodeStepProps> = (props) => {
       >
         <Controller
           control={control}
+          name="country"
+          rules={{ required: true }}
+          render={({ field }) => (
+            <FormControl sx={{ width: "100%" }}>
+              <InputLabel>Country</InputLabel>
+              <Select
+                {...field}
+                label="Country"
+                fullWidth
+                disabled={loading}
+                MenuProps={{
+                  PaperProps: { sx: { height: "200px" } },
+                }}
+              >
+                {countries.map((country) => (
+                  <MenuItem
+                    key={country.defaultName}
+                    value={country.countryCodes[0].countryCode}
+                  >
+                    {country.defaultName} {}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+        />
+        <Controller
+          control={control}
           name="phoneNumber"
           rules={{ required: true }}
           render={({ field }) => (
-            <TextField
-              {...field}
-              label="Phone Number"
-              variant="outlined"
-              fullWidth
-              disabled={loading}
-            />
+            <FormControl sx={{ width: "100%" }}>
+              <TextField
+                {...field}
+                label="Phone Number"
+                variant="outlined"
+                fullWidth
+                disabled={loading}
+              />
+            </FormControl>
           )}
         />
         <LoadingButton

@@ -19,3 +19,9 @@ export interface TelegramError {
   code: number;
   errorMessage: string;
 }
+
+export interface Country {
+  defaultName: string;
+  hidden: boolean;
+  countryCodes: { countryCode: string }[];
+}

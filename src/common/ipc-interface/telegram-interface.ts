@@ -1,5 +1,9 @@
 import { FileEntity } from "@/common/entities";
-import { Message } from "@/common/gramjs";
+import { Country, Message } from "@/common/gramjs";
+
+export interface GetCountriesListResponseData {
+  countries: Country[];
+}
 
 export interface SendCodeRequestData {
   phoneNumber: string;

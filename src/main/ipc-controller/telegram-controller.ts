@@ -1,6 +1,5 @@
 import increment from "add-filename-increment";
-import { IpcMainEvent } from "electron";
-import { dialog } from "electron";
+import { dialog, IpcMainEvent } from "electron";
 import fs from "fs";
 import path from "path";
 
@@ -28,6 +27,19 @@ export const checkAuth = async (event: IpcMainEvent, request: IpcRequest) => {
     event.sender.send(request.responseChannel, formatError(e));
   }
 };
+
+export const getCountriesList = async (
+  event: IpcMainEvent,
+  request: IpcRequest
+) => {
+  try {
+    const response = await authService.getCountriesList();
+    event.sender.send(request.responseChannel, response);
+  } catch (e) {
+    event.sender.send(request.responseChannel, formatError(e));
+  }
+};
+
 export const sendCode = async (
   event: IpcMainEvent,
   request: IpcRequest<SendCodeRequestData>
@@ -39,6 +51,7 @@ export const sendCode = async (
     event.sender.send(request.responseChannel, formatError(e));
   }
 };
+
 export const signIn = async (
   event: IpcMainEvent,
   request: IpcRequest<SignInRequestData>
@@ -55,6 +68,7 @@ export const signIn = async (
     event.sender.send(request.responseChannel, formatError(e));
   }
 };
+
 export const SignInWithPassword = async (
   event: IpcMainEvent,
   request: IpcRequest<SignInWithPasswordRequestData>
@@ -69,6 +83,7 @@ export const SignInWithPassword = async (
     event.sender.send(request.responseChannel, formatError(e));
   }
 };
+
 export const downloadFiles = async (
   event: IpcMainEvent,
   request: IpcRequest<DownloadFilesRequestData>
@@ -95,6 +110,7 @@ export const downloadFiles = async (
 
   event.sender.send(request.responseChannel, downloadedFiles);
 };
+
 export const deleteMessage = async (
   event: IpcMainEvent,
   request: IpcRequest<DeleteMessageRequestData>
@@ -114,6 +130,7 @@ export const deleteMessage = async (
 
   event.sender.send(request.responseChannel, true);
 };
+
 export const sendMessageToMe = async (
   event: IpcMainEvent,
   request: IpcRequest<SendMediaToMeRequestData>
