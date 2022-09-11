@@ -117,6 +117,11 @@ export const sendMessageToMe = async (
   event: IpcMainEvent,
   request: IpcRequest<SendMediaToMeRequestData>
 ) => {
-  const message = await messageService.sendMediaToMe(request.data.file);
+  const message = await messageService.sendMediaToMe(
+    request.data.file,
+    null,
+    (progress) => event.sender.send(request.responseChannel, progress)
+  );
+
   event.sender.send(request.responseChannel, message);
 };

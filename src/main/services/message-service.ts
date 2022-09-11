@@ -13,7 +13,8 @@ import { telegramClient } from "@/main/core/gramjs-client";
 
 export const sendMediaToMe = async (
   file: FileEntity,
-  message?: string
+  message?: string,
+  onProgress?: (progress: number) => void
 ): Promise<SendMediaToMeResponseData> => {
   const updates = await telegramClient.invoke(
     new Api.messages.SendMedia({
@@ -22,6 +23,7 @@ export const sendMediaToMe = async (
         file: await telegramClient.uploadFile({
           file: new CustomFile(file.filename, file.fileSize, file.filepath),
           workers: 2,
+          onProgress: onProgress,
         }),
         attributes: [
           new Api.DocumentAttributeFilename({ fileName: file.filename }),

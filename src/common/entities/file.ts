@@ -9,4 +9,5 @@ export interface FileEntity {
   fileReference?: Buffer;
   messageId?: number;
   uploading?: boolean;
+  progress?: number;
 }

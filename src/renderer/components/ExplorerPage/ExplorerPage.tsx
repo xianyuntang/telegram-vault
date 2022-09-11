@@ -1,7 +1,7 @@
 import { AppBar, Box, Drawer, Grid, Toolbar, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import FolderContent from "./FolderContent";
 
+import FolderContent from "./FolderContent";
 import FolderMenu from "./FolderMenu";
 
 const LEFT_DRAWER_WIDTH = "256px";
@@ -9,7 +9,7 @@ const APP_BAR_HEIGHT = "64px";
 
 const ExplorerPage: React.FC = () => {
   return (
-    <Grid container>
+    <Box>
       <AppBar
         sx={{
           height: APP_BAR_HEIGHT,
@@ -26,7 +26,6 @@ const ExplorerPage: React.FC = () => {
         sx={{
           position: "relative",
           width: LEFT_DRAWER_WIDTH,
-
           [`& .MuiDrawer-paper`]: { width: LEFT_DRAWER_WIDTH, padding: "8px" },
         }}
         variant="permanent"
@@ -36,16 +35,17 @@ const ExplorerPage: React.FC = () => {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
+          width: `calc(100vw - ${LEFT_DRAWER_WIDTH})`,
           height: `calc(100vh - ${APP_BAR_HEIGHT})`,
           overflow: "auto",
           marginTop: APP_BAR_HEIGHT,
           padding: "8px",
+          marginLeft: LEFT_DRAWER_WIDTH,
         }}
       >
         <FolderContent />
       </Box>
-    </Grid>
+    </Box>
   );
 };
 

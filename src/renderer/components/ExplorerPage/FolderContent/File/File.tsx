@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, LinearProgress, Paper, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 
 import { FileEntity } from "@/common/entities";
@@ -34,8 +34,32 @@ const File: React.FC<FileProps> = ({ file, onClick }) => {
       onClick={handleFileOnClick}
     >
       <FileIcon ext={file.fileExt} />
-      <Box sx={{ padding: "0 4px" }}>
-        <Typography variant="subtitle2">{file.filename}</Typography>
+      <Box
+        sx={{
+          width: "100%",
+          padding: "0 4px",
+        }}
+      >
+        <Tooltip title={file.filename} enterDelay={500}>
+          <Typography
+            sx={{
+              width: "100%",
+              display: "-webkit-box",
+              "-webkit-line-clamp": "2",
+              "-webkit-box-orient": "vertical",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+            }}
+            variant="subtitle2"
+          >
+            {file.filename}
+          </Typography>
+        </Tooltip>
+      </Box>
+      <Box>
+        {file.uploading && file.progress !== undefined && (
+          <LinearProgress variant="determinate" value={file.progress * 100} />
+        )}
       </Box>
     </Paper>
   );

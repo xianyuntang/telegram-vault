@@ -2,6 +2,7 @@ import { app } from "electron";
 import ElectronStore from "electron-store";
 import fs from "fs";
 import path from "path";
+import { v4 as uuidv4 } from "uuid";
 
 import { FolderEntity, StoreKey } from "@/common/entities";
 import { fileService, messageService } from "@/main//services";
@@ -54,6 +55,7 @@ const saveDatabase = async (update = true) => {
     try {
       await messageService.sendMediaToMe(
         {
+          id: uuidv4(),
           folderId: "9MkbH2Bstf3xC2iigWy9sy96BCHzr9yx3Q4hyBUW",
           filename: DB_MESSAGE_NAME,
           filepath: dbPath,

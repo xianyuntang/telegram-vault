@@ -1,4 +1,5 @@
 import { FileEntity } from "@/common/entities";
+import { Message } from "@/common/gramjs";
 import { TelegramChannel } from "@/common/ipc-channel";
 import {
   DeleteMessageRequestData,
@@ -55,9 +56,16 @@ export const deleteMessage = async (
 };
 
 export const sendMediaToMe = async (
-  data: SendMediaToMeRequestData
-): Promise<SendMediaToMeRequestData> => {
-  return ipc.send(TelegramChannel.SEND_MEDIA_TO_ME, {
-    data,
-  });
+  data: SendMediaToMeRequestData,
+  onProgress: (
+    eventData: number | { file: FileEntity; message: Message }
+  ) => void
+) => {
+  ipc.sendKeepConnection(
+    TelegramChannel.SEND_MEDIA_TO_ME,
+    {
+      data,
+    },
+    onProgress
+  );
 };

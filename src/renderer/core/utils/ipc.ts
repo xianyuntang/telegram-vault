@@ -21,3 +21,19 @@ export const send = <T>(
     });
   });
 };
+
+export const sendKeepConnection = (
+  channel: string,
+  request: IpcRequest = {},
+  callback: (eventData: any) => void
+) => {
+  if (!request.responseChannel) {
+    request.responseChannel = `${channel}-response-${dayjs().unix()}`;
+  }
+
+  window.api.send(channel, request);
+
+  window.api.receive(request.responseChannel as string, (response: never) => {
+    callback(response);
+  });
+};
