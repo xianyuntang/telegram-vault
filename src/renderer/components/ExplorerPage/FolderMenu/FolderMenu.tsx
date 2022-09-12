@@ -1,14 +1,20 @@
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
   Checkbox,
+  IconButton,
+  InputBase,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemButton,
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
+import { FolderEntity } from "@/common/entities";
 import { useDispatch, useSelector } from "@/renderer/hooks";
 import { folderService } from "@/renderer/ipc-services";
 import {
@@ -20,9 +26,20 @@ import {
 
 import FolderActionToolbar from "./FolderActionToolbar";
 
+interface EditFolderNameForm {
+  folderName: string;
+}
+
 const FolderMenu: React.FC = () => {
+  const [editingFolderId, setEditingFolderId] = useState<string | null>(null);
   const folders = useSelector((state) => state.folder.folders);
   const currentFolderId = useSelector((state) => state.folder.currentFolderId);
+
+  const { register, getValues, setValue } = useForm<EditFolderNameForm>({
+    defaultValues: {
+      folderName: "",
+    },
+  });
 
   const dispatch = useDispatch();
 
@@ -47,6 +64,21 @@ const FolderMenu: React.FC = () => {
   const handleFolderClick = (folderId: string) => {
     dispatch(setCurrentFolder({ folderId }));
   };
+
+  const handleEditFolderNameClick = async (folder: FolderEntity) => {
+    if (editingFolderId === folder.id) {
+      const newFolders = await folderService.editFolderName({
+        folderId: editingFolderId,
+        folderName: getValues("folderName"),
+      });
+      setEditingFolderId(null);
+      dispatch(setFolders({ folders: newFolders }));
+    } else {
+      setValue("folderName", folder.name);
+      setEditingFolderId(folder.id);
+    }
+  };
+
   return (
     <Box sx={{ width: "100%", position: "relative" }}>
       <FolderActionToolbar />
@@ -60,17 +92,43 @@ const FolderMenu: React.FC = () => {
             dense
             key={folder.id}
             disableGutters
+            secondaryAction={
+              folder.id !== "root" && (
+                <IconButton onClick={() => handleEditFolderNameClick(folder)}>
+                  <EditIcon />
+                </IconButton>
+              )
+            }
           >
-            <ListItemButton onClick={() => handleFolderClick(folder.id)}>
+            <ListItemButton
+              onClick={() => handleFolderClick(folder.id)}
+              disableRipple={folder.id === editingFolderId}
+            >
               <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  tabIndex={-1}
-                  disableRipple
-                  onClick={(evt) => handleFolderCheckClick(folder.id, evt)}
-                />
+                {folder.id !== "root" && (
+                  <Checkbox
+                    edge="start"
+                    tabIndex={-1}
+                    disableRipple
+                    onClick={(evt) => handleFolderCheckClick(folder.id, evt)}
+                  />
+                )}
               </ListItemIcon>
-              <ListItemText primary={folder.name} />
+              {folder.id === editingFolderId ? (
+                <ListItemText
+                  primary={
+                    <InputBase
+                      size="small"
+                      fullWidth
+                      sx={{ width: "100px" }}
+                      autoFocus
+                      {...register("folderName")}
+                    />
+                  }
+                />
+              ) : (
+                <ListItemText primary={folder.name} />
+              )}
             </ListItemButton>
           </ListItem>
         ))}

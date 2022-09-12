@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AppRouterPath } from "@/renderer/components/AppRouter";
 import { dbService, telegramService } from "@/renderer/ipc-services";
+
 interface SignInWithPasswordForm {
   password: string;
 }
@@ -27,9 +28,10 @@ const SignInWithPasswordStep: React.FC = () => {
   const onSubmit: SubmitHandler<SignInWithPasswordForm> = async (data) => {
     setLoading(true);
     try {
-      const response = await telegramService.signInWithPassword(data);
-      console.log(response);
+      await telegramService.signInWithPassword(data);
+
       await dbService.fetchDatabase();
+
       navigate(AppRouterPath.FILE_EXPLORER);
     } catch (e) {
       console.log(e);

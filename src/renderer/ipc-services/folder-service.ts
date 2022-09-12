@@ -3,6 +3,7 @@ import { DatabaseChannel } from "@/common/ipc-channel";
 import {
   CreateFolderRequestData,
   DeleteFolderRequestData,
+  EditFolderNameRequestData,
 } from "@/common/ipc-interface/database-interface";
 import { ipc } from "@/renderer/core/utils";
 
@@ -22,4 +23,10 @@ export const deleteFolder = async (
   data: DeleteFolderRequestData
 ): Promise<boolean> => {
   return ipc.send(DatabaseChannel.DELETE_FOLDER, { data });
+};
+
+export const editFolderName = async (
+  data: EditFolderNameRequestData
+): Promise<FolderEntity[]> => {
+  return ipc.send(DatabaseChannel.EDIT_FOLDER_NAME, { data });
 };

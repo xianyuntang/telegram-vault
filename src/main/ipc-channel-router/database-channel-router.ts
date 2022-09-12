@@ -4,6 +4,10 @@ import { databaseController } from "@/main/ipc-controller";
 
 const databaseChannelRouters: IpcChannelRouter[] = [
   {
+    name: DatabaseChannel.FETCH_DATABASE,
+    handler: databaseController.fetchDatabase,
+  },
+  {
     name: DatabaseChannel.GET_FOLDERS,
     handler: databaseController.getFolders,
   },
@@ -18,6 +22,10 @@ const databaseChannelRouters: IpcChannelRouter[] = [
   {
     name: DatabaseChannel.GET_FILES,
     handler: databaseController.getFiles,
+  },
+  {
+    name: DatabaseChannel.EDIT_FOLDER_NAME,
+    handler: databaseController.editFolderName,
   },
 ];
 

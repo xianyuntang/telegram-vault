@@ -9,3 +9,8 @@ export interface DeleteFolderRequestData {
 export interface GetFilesRequestData {
   folderId: string;
 }
+
+export interface EditFolderNameRequestData {
+  folderId: string;
+  folderName: string;
+}
