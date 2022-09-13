@@ -12,7 +12,7 @@ export const FolderActionToolbar: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleCreateFolderClick = async () => {
-    const folder = await folderService.createFolder({ name: "abc" });
+    const folder = await folderService.createFolder({ name: "New Folder" });
     dispatch(addFolder({ folder }));
   };
 

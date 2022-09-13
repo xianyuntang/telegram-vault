@@ -116,6 +116,7 @@ const FolderMenu: React.FC = () => {
               </ListItemIcon>
               {folder.id === editingFolderId ? (
                 <ListItemText
+                  sx={{ width: "150px", marginLeft: "-20px" }}
                   primary={
                     <InputBase
                       size="small"
@@ -127,7 +128,10 @@ const FolderMenu: React.FC = () => {
                   }
                 />
               ) : (
-                <ListItemText primary={folder.name} />
+                <ListItemText
+                  sx={{ width: "150px", marginLeft: "-20px" }}
+                  primary={folder.name}
+                />
               )}
             </ListItemButton>
           </ListItem>
